@@ -17,7 +17,7 @@
 
 ### Stack vs Queue
 #### Stack
-먼저 들어간 데이터가 나중에 나오는     LIFO(Last In First Out)    의 구조를 가집니다.
+먼저 들어간 데이터가 나중에 나오는 ```LIFO(Last In First Out)``` 의 구조를 가집니다.
 
 #### Queue
-먼저 들어간 데이터가 먼저 나오는    FIFO(First In First Out)    의 구조를 가집니다.
+먼저 들어간 데이터가 먼저 나오는 ```FIFO(First In First Out)``` 의 구조를 가집니다.
