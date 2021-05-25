@@ -81,6 +81,9 @@ Set은 중복을 허용하지 않는 자료구조입니다.
 
     ``` java
     private transient HashMap<E, Object> map;
+
+    // Dummy Value to associate with an Object in the backing Map
+    private static final Object PRESENT = new Object();
     ```
 
     Object 클래스를 이용하여 중복을 제거합니다.
@@ -106,6 +109,12 @@ Set은 중복을 허용하지 않는 자료구조입니다.
 
 
 **Map**
+
+Key와 Value를 쌍으로 저장하는 자료구조입니다.
+
+Key는 중복을 허용하지 않지만 Value는 중복을 허용합니다.
+
+Key를 통해 Value에 바로 접근이 가능하므로 탐색이 빠릅니다.
 
 - 왜 Map 인터페이스는 컬렉션 인터페이스를 상속받지 않을까요?
 
@@ -134,8 +143,4 @@ Set은 중복을 허용하지 않는 자료구조입니다.
     객체의 정렬에 사용됩니다.
 
     내부 구조는 TreeSet과 동일하니다.
-
-
-
-
-
+    
