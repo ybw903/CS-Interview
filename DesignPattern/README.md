@@ -1,3 +1,5 @@
+## 디자인패턴
+
 ### 싱글톤
 
 #### 개념
@@ -157,3 +159,49 @@
     Lazy Loading이 가능합니다.
 
     Thread safe합니다.
+
+### 전략 패턴
+
+#### 개념
+
+디자인 패턴 중 행위 패턴의 하나로, 객체가 할 수 있는 행위들 각각을 전략으로 만들어 놓고 사용하며, 동적으로 전략 수정이 가능한 패턴입니다.
+
+> **전략패턴** <br/> 
+    동일 계열의 알고리즘 군을 정의하고 각 알고리즘을 캡슐화하며, 이들을 상호교환이 가능하도록 합니다. <br/>
+    - GoF 디자인패턴
+
+#### 요소
+**Context**
+- 전략패턴을 이용하는 역할을 수행
+- 필요에 따라 동적으로 구체적인 전략을 바꿀 수 있도록 한다. (DI)
+
+**Strategy**
+- 인터페이스나 추상 클래스로 외부에서 동일한 방식으로 알고리즘을 호출하는 방법을 명시한다.
+
+**ConcreateStrategy**
+- 전략 패턴에서 명시한 알고리즘을 실제로 구현한 클래스
+
+#### 전략 패턴 in JDK
+```java
+public interface Comparator<T> {
+    int compare(T o1, T o2);
+    ...
+}
+```
+```java
+public class studentCompareByScore implements Comparator<Student> {
+    @Override
+    public int compare(Student s1, Student s2) {
+        return s1.getScore() - s2.getScore();
+    }
+}
+```
+비교 전략을 sort라는 컨텍스트에서 사용.
+
+코드의 수정 없이 확장을 할 수 있음.
+
+####  전략 패턴 vs Template-Method패턴  
+
+둘 다 OCP를 준수하기 위해 사용되는 디자인 패턴입니다.
+
+하지만 전략 패턴은 Compositioin(has-a)으로 볼 수 있고, Template-Method 패턴은 상속(is-a)로 볼 수 있습니다. 
