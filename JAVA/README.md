@@ -143,4 +143,131 @@ Key를 통해 Value에 바로 접근이 가능하므로 탐색이 빠릅니다.
     객체의 정렬에 사용됩니다.
 
     내부 구조는 TreeSet과 동일하니다.
-    
+
+### 제네릭
+#### 제네릭이란?
+정의: 다양한 타입의 객체들을 다루는 메서드나 클래스에 컴파일 시의 타입 체크를 해주는 기능입니다.
+
+효과: 객체의 타입 안정성을 높이고, 형변환의 번거로움이 줄어듭니다.
+
+```java
+List<String> stringList = new ArrayList<>();
+
+stringList.add(1); //에러       ...
+stringList.add(3.14); //에러    컴파일 되지 않는 코드
+stringList.add("ok"); //ok
+
+```
+
+타입체크: 의도하지 않은 타입이 들어오는 것을 막습니다.
+
+#### 제네릭의 형태
+```java
+// T: 타입 매개변수
+// Box<T>: 제네릭 클래스
+public class Box<T> {
+
+    List<T> items = new ArrayList<>();
+
+    public void add(T item) {
+        items.add(item);
+    }
+}
+```
+
+```java
+public static void main(String[] args) {
+    Box<String> box = new Box<String>();
+}
+```
+
+```java
+public class Box<String> {
+
+    List<String> items = new ArrayList<>();
+
+    public void add(String item) {
+        items.add(item);
+    }
+}
+```
+
+#### 제한된 제네릭
+
+```java
+public class Box<T extends Fruit> { 
+    List<T> items = new ArrayList<>();
+
+    void add(T itme) {
+        items.add(itme);
+    }
+}
+```
+
+#### 제네릭 메서드
+
+```java
+// <T>: 타입 매개변수
+// T: 리턴 타입
+// foo: 메소드명
+// List<T> list: 매개변수
+public <T> T foo(List<T> list) {}
+```
+
+```java
+// 타입 매개변수의 범위 제한
+public <T> T foo(List<T extends Fruit> list) {} //X
+public <T extends Fruit> T foo(List<T> list) {} //O
+```
+
+***제네릭 메서드의 타입과 제네릭 클래스의 타입은 서로 다른 것입니다.***
+```java
+public class Box<T> {
+    public <T> void printParamClass(T t) {
+        System.out.println(t.getClass());
+    }
+}
+```
+
+***제네릭 메서드는 제네릭 클래스가 아닌 일반 클래스에서도 사용 가능합니다.***
+```java
+public class MyClass {
+    public <T> void printParamClass(T t) {
+        System.out.println(t.getClass());
+    }
+}
+```
+
+#### 와일드 카드
+와일드 카드는 '?' 기호로 표현하고, 어떠한 타입도 될 수 있습니다.
+
+**아무 타입의 list를 출력하는 메서드**
+```java
+//<MyClass>
+public static void printList(List<Object> list) {
+    for (Object elem : list) {
+        System.out.println(elem + " ");
+    }
+}
+```
+
+```java
+public static void main(String[] args) {
+    List<Fruit> fruits = new ArrayList<>();
+
+    MyClass.printList(fruits); //에러
+    //Required type: List<Object>
+    //Provided: List<Fruit>
+}
+```
+
+***정확히 Object형의 요소를 갖는 List만 들어올 수 있습니다.***
+
+=> 와일드 카드를 사용하여 모든 타입이 들어올 수 있도록 수정
+```java
+public static void printList(List<? extends Object> list) {
+    for (Object elem : list) {
+        System.out.println(elem + " ");
+    }
+}
+```
