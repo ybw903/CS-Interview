@@ -343,3 +343,176 @@ obj.showNameInSec(1000); // name
 화살표 함수안에서 this는 선언될 당시의 상위 스코프에 해당하는 실행 문맥의 디스 바인딩 컴포넌트를 참조합니다.
 
 이런 특징을 갖는 this를 렉시컬 this라고 부릅니다.
+
+## Prototype
+
+### Prototype 이해하기
+* 자바스크립트에 클래스는 없습니다.
+
+* 자바스크립트에서 '복사'를 통한 상속은 없습니다.
+
+* Prototype은 클래스, 객체의 내용 복사 없이도 상속을 구현할 수 있게 해주는 방법입니다.
+
+* Prototype은 '연결'입니다.
+
+***클래스가 없다면, 자바스크립트는 객체를 어떻게 설계대로 찍어낼 수 있을까?***
+
+```javascript
+class Person {
+    constructor(name) {
+        this.name = name;
+    }
+
+    sayHello() {
+        console.log(`${this.name}: hello!`);
+    }
+}
+```
+
+```javascript
+function Person(name) {
+    this.name = name;
+    this.sayHello = function() {
+        console.log(`${this.name}: hello!`);
+    }
+}
+```
+
+***실제로 실행되는 코드는 클래스가 아니다.***
+
+
+```javascript
+function Person(name) {
+    this.name = name;
+    this.sayHello = function() {
+        console.log(`${this.name}: hello!`);
+    }
+}
+
+const james = new Person('james');
+```
+***클래스가 아니라면 return이 없는데 객체가 어떻게 생성되는 걸까?***
+
+```javascript
+const james = new Person('james');
+```
+1. new 연산자가 새로운 빈 객체를 메모리 상에 생성함.
+
+```javascript
+function Person(name) {
+    this.name = name;
+    this.sayHello = function() {
+        console.log(`${this.name}: hello!`);
+    }
+}
+```
+2. 생성된 빈 객체가 this에 바인딩 됨
+
+3. this 객체의 속성을 채우는 동작이 수행됨
+
+4. return 하는 것이 없다면 그렇게 만들어진 this가 return됨
+
+***복사 없이 어떻게 상속을 수행할 수 있는 것인가?***
+
+```javascript
+class Person {
+    constructor (name){
+        this.name = name;
+    }
+
+    sayHello() {
+        console.log(`${this.name}: hello!`);
+    }
+}
+
+class Crew extends Person {
+    constructor(name) {
+        super(name);
+    }
+
+    doCoding() {
+        console.log(`${this.name}: coding...!`);
+    }
+}
+```
+Person + Crew
+
+내용이 '복사'된 객체
+
+=> 자바스크립트에서는 불가능
+
+#### 객체간의 연결 관계 이해하기
+.`__proto__ `= 객체와 객체를 연결하는 링크
+
+1. 다른 객체를 바탕으로 만들어진 객체라면
+
+객체는 자신의 원형이라고 할 수 있는 객체가 있다면 그 객체를 가리키는 `__proto__` 링크를 자동으로 가짐
+
+```javascript
+const newObj = Object.create(oldObj);
+newObj.__proto__ === oldObj
+```
+
+2. 그냥 객체가 아니라 함수라면
+
+함수가 생성될 때, 함수의 prototype객체가 같이 만들어짐.
+
+함수의 prototype속성은 만들어진 함수의 prototype객체를 가리키고 함수의 prototype의 constructor속성은 함수를 가리키는 순환참조 관계를 가지고 있습니다.
+
+3. new + 함수로 만들어진 객체라면
+
+만들어진 새로운 객체의 `__proto__`링크는 앞서 생성된 함수의 prortotype객체을 가리킵니다.
+
+### Prototype Chaining을 이해하기
+
+Prototype Chaining: `__proto__`를 따라 탐색하기
+
+#### 프로토타입 체이닝과 Property 할당
+
+```javascript
+function sayHello() {
+    console.log(`${this.name}: hello!`);
+}
+
+function Person(name) {
+    this.name = name;
+}
+
+Person.prototype.sayHello = sayHello;
+
+const james = new Peroson('james');
+
+james.sayHello = function() {
+    console.log('hi~!');
+};
+```
+**james객체에 sayHello 추가?**
+
+**Person.prototype.sayHello 덮어씌우기?**
+
+***=> 상황에 따라 다르게 적용됩니다.***
+
+```javascript
+Object.defineProperty(Person.prototype, "sayHello", {
+    writable: false
+    ...
+})
+
+// 엄격 모드: 에러
+// 비엄격 모드: 아무일 없음
+```
+
+Person.prototype.sayHello가 setter일 경우, 그냥 setter를 실행
+
+```javascript
+Object.defineProperty(Person.prototype, "sayHello", {
+    writable: true
+    ...
+})
+
+// james.sayHello추가
+```
+
+이 방법이 적용될 경우, Person타입 prototype객체의 sayHello에 접근할 수 있는 방법이 사라집니다.
+
+이를 가려짐이라고 부릅니다.
