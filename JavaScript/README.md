@@ -516,3 +516,9 @@ Object.defineProperty(Person.prototype, "sayHello", {
 이 방법이 적용될 경우, Person타입 prototype객체의 sayHello에 접근할 수 있는 방법이 사라집니다.
 
 이를 가려짐이라고 부릅니다.
+
+## Scope & Closure
+
+### Scope
+변수 이름, 함수 이름, 클래스 이름과 같은 식별자가 본인이 선언된 위치에 따라 다른 코드에서 자신이 참조될 수 있을지 없을지 결정되는 것
+
