@@ -1,9 +1,13 @@
 # CS-Interview
-면접준비시 참고할 CS지식
+CS 공부
 
 [자료구조](./DataStructure/ds.md)
 
 [데이터베이스](./DB/db.md)
+
+[디자인패턴](./DesignPattern/README.md)
+
+[도커](./Docker/README.md)
 
 [네트워크](./Network/network.md)
 
