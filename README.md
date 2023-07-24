@@ -1,4 +1,5 @@
-# CS-Interview
+# CS-Study
+
 CS 공부
 
 [자료구조](./DataStructure/ds.md)
